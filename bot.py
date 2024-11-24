@@ -1,8 +1,12 @@
+import os
 import telebot
 from telebot import types
 import messages
+import AiRequests
+from dotenv import load_dotenv
+load_dotenv()
 
-bot = telebot.TeleBot("7647716410:AAFXo_mKsyZ9dETZh-Dw852jxy8Z5hhHyDs", parse_mode=None)
+bot = telebot.TeleBot(os.environ.get("TELEGRAM_API_KEY"), parse_mode=None)
 
 
 @bot.message_handler(commands=['start'])
