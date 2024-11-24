@@ -39,7 +39,8 @@ def echo_all(message):
         bot.send_message(message.chat.id, "You selected Option 2!")
     elif message.text == "Meta":
         bot.send_message(message.chat.id, "You selected Option 2!")
-        AiRequests.AskGpt(message.chat.id, "llama3-8b-8192")
+        aiModel = "llama3-8b-8192"
+        AiRequests.AskGpt(message.text, aiModel)
     elif message.text == "Personalized AI":
         bot.send_message(message.chat.id, "You selected Option 2!")        
     else:
