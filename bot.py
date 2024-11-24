@@ -29,7 +29,6 @@ def start_command(message):
         reply_markup=menu,
     )
 
-
 @bot.message_handler(func=lambda message: True)
 def echo_all(message):
     if message.text == "ChatGPT":
@@ -40,6 +39,7 @@ def echo_all(message):
         bot.send_message(message.chat.id, "You selected Option 2!")
     elif message.text == "Meta":
         bot.send_message(message.chat.id, "You selected Option 2!")
+        AiRequests.AskGpt(message.chat.id, "llama3-8b-8192")
     elif message.text == "Personalized AI":
         bot.send_message(message.chat.id, "You selected Option 2!")        
     else:
