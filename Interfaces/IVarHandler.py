@@ -1,2 +1,2 @@
 class VarHandler():
-    handler = None
+    handler = True      #dont set to none (the prod will suffer ) signed-off-by Dominik Bobrushka

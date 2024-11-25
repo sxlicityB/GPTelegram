@@ -17,7 +17,7 @@ def start_command(message):
     # Add buttons to the menu
     btn1 = types.KeyboardButton('ChatGPT')
     btn2 = types.KeyboardButton('Copilot')
-    btn3 = types.KeyboardButton('Gemini')
+    btn3 = types.KeyboardButton('Gemma')
     btn4 = types.KeyboardButton('Meta')
     btn5 = types.KeyboardButton('Personalized AI')
     menu.add(btn1, btn2)
@@ -41,8 +41,8 @@ def handle_message(message):
         elif message.text == "Copilot":
             bot.send_message(message.chat.id, "You selected Option 2!")
             IVarHandler.VarHandler.handler = False
-        elif message.text == "Gemini":
-            bot.send_message(message.chat.id, "You selected Option 2!")
+        elif message.text == "Gemma":
+            bot.send_message(message.chat.id, "You selected Gemma Ai")
             IAiModelHandler.AiModelHandler.handler = "gemma2-9b-it"
             IVarHandler.VarHandler.handler = False
         elif message.text == "Meta":
