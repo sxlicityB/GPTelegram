@@ -3,6 +3,7 @@ import telebot
 from telebot import types
 import messages
 import AiRequests
+from Interfaces import IVarHandler, IAiModelHandler
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -29,34 +30,31 @@ def start_command(message):
         reply_markup=menu,
     )
 
-def setX_True():
-    global x 
-    x = True
 
-def setX_False():
-    global x 
-    x = False
-
-x = True
 
 @bot.message_handler(func=lambda message: True)
 def handle_message(message):
-    if x == True:
+    if IVarHandler.VarHandler.handler == True:
         if message.text == "ChatGPT":
             bot.send_message(message.chat.id, "You selected Option 1!")
+            IVarHandler.VarHandler.handler = False
         elif message.text == "Copilot":
             bot.send_message(message.chat.id, "You selected Option 2!")
+            IVarHandler.VarHandler.handler = False
         elif message.text == "Gemini":
             bot.send_message(message.chat.id, "You selected Option 2!")
+            IAiModelHandler.AiModelHandler.handler = "gemma2-9b-it"
+            IVarHandler.VarHandler.handler = False
         elif message.text == "Meta":
             bot.send_message(message.chat.id, "You selected META")
-            setX_False()
+            IAiModelHandler.AiModelHandler.handler = "llama3-8b-8192"
+            IVarHandler.VarHandler.handler = False
         elif message.text == "Personalized AI":
             bot.send_message(message.chat.id, "You selected Option 2!")  
         else:
             bot.send_message(message.chat.id, "Choose a option!")      
     else:
-        bot.send_message(message.chat.id ,AiRequests.AskGpt(message.text, "llama3-8b-8192"))
+        bot.send_message(message.chat.id ,AiRequests.AskGpt(message.text, IAiModelHandler.AiModelHandler.handler))
 
 
 

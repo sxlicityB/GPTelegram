@@ -1,0 +1,2 @@
+class VarHandler():
+    handler = None
