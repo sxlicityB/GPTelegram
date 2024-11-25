@@ -17,8 +17,8 @@ def start_command(message):
     # Add buttons to the menu
     btn1 = types.KeyboardButton('ChatGPT')
     btn2 = types.KeyboardButton('Copilot')
-    btn3 = types.KeyboardButton('Gemma')
-    btn4 = types.KeyboardButton('Meta')
+    btn3 = types.KeyboardButton('Gemma AI')
+    btn4 = types.KeyboardButton('Meta AI')
     btn5 = types.KeyboardButton('Personalized AI')
     menu.add(btn1, btn2)
     menu.add(btn3, btn4)
@@ -30,6 +30,9 @@ def start_command(message):
         reply_markup=menu,
     )
 
+@bot.message_handler(commands=['stop'])
+def start_command(message):
+    IVarHandler.VarHandler.handler = True 
 
 
 @bot.message_handler(func=lambda message: True)
@@ -41,12 +44,12 @@ def handle_message(message):
         elif message.text == "Copilot":
             bot.send_message(message.chat.id, "You selected Option 2!")
             IVarHandler.VarHandler.handler = False
-        elif message.text == "Gemma":
+        elif message.text == "Gemma AI":
             bot.send_message(message.chat.id, "You selected Gemma Ai")
             IAiModelHandler.AiModelHandler.handler = "gemma2-9b-it"
             IVarHandler.VarHandler.handler = False
-        elif message.text == "Meta":
-            bot.send_message(message.chat.id, "You selected META")
+        elif message.text == "Meta AI":
+            bot.send_message(message.chat.id, "You selected Meta AI")
             IAiModelHandler.AiModelHandler.handler = "llama3-8b-8192"
             IVarHandler.VarHandler.handler = False
         elif message.text == "Personalized AI":
