@@ -29,22 +29,36 @@ def start_command(message):
         reply_markup=menu,
     )
 
+def setX_True():
+    global x 
+    x = True
+
+def setX_False():
+    global x 
+    x = False
+
+x = True
+
 @bot.message_handler(func=lambda message: True)
-def echo_all(message):
-    if message.text == "ChatGPT":
-        bot.send_message(message.chat.id, "You selected Option 1!")
-    elif message.text == "Copilot":
-        bot.send_message(message.chat.id, "You selected Option 2!")
-    elif message.text == "Gemini":
-        bot.send_message(message.chat.id, "You selected Option 2!")
-    elif message.text == "Meta":
-        bot.send_message(message.chat.id, "You selected Option 2!")
-        aiModel = "llama3-8b-8192"
-        AiRequests.AskGpt(message.text, aiModel)
-    elif message.text == "Personalized AI":
-        bot.send_message(message.chat.id, "You selected Option 2!")        
+def handle_message(message):
+    if x == True:
+        if message.text == "ChatGPT":
+            bot.send_message(message.chat.id, "You selected Option 1!")
+        elif message.text == "Copilot":
+            bot.send_message(message.chat.id, "You selected Option 2!")
+        elif message.text == "Gemini":
+            bot.send_message(message.chat.id, "You selected Option 2!")
+        elif message.text == "Meta":
+            bot.send_message(message.chat.id, "You selected META")
+            setX_False()
+        elif message.text == "Personalized AI":
+            bot.send_message(message.chat.id, "You selected Option 2!")  
+        else:
+            bot.send_message(message.chat.id, "Choose a option!")      
     else:
-        bot.send_message(message.chat.id, "Please choose an option.")
+        bot.send_message(message.chat.id ,AiRequests.AskGpt(message, "llama3-8b-8192"))
+
+
 
 
 def run():
