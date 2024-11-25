@@ -56,7 +56,7 @@ def handle_message(message):
         else:
             bot.send_message(message.chat.id, "Choose a option!")      
     else:
-        bot.send_message(message.chat.id ,AiRequests.AskGpt(message, "llama3-8b-8192"))
+        bot.send_message(message.chat.id ,AiRequests.AskGpt(message.text, "llama3-8b-8192"))
 
 
 
