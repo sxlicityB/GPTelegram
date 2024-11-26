@@ -4,6 +4,7 @@ from telebot import types
 import messages
 import AiRequests
 from Interfaces import IVarHandler, IAiModelHandler
+from Requests import GeneratePrompts
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -37,7 +38,7 @@ def start_command(message):
 
 @bot.message_handler(func=lambda message: True)
 def handle_message(message):
-    if IVarHandler.VarHandler.handler == True:
+    if IVarHandler.VarHandler.handler == True and IVarHandler.VarHandler.promptHandler != True:
         if message.text == "ChatGPT":
             bot.send_message(message.chat.id, "You selected Option 1!")
             IVarHandler.VarHandler.handler = False
@@ -53,11 +54,18 @@ def handle_message(message):
             IAiModelHandler.AiModelHandler.handler = "llama3-8b-8192"
             IVarHandler.VarHandler.handler = False
         elif message.text == "Personalized AI":
-            bot.send_message(message.chat.id, "You selected Option 2!")  
+            bot.send_message(message.chat.id, "You selected custom AI\nDescribe how you want your chatbot to behave.")
+            IVarHandler.VarHandler.promptHandler = True
+            IVarHandler.VarHandler.handler = False
+            IAiModelHandler.AiModelHandler.handler = "llama3-8b-8192"
         else:
             bot.send_message(message.chat.id, "Choose a option!")      
-    else:
-        bot.send_message(message.chat.id ,AiRequests.AskGpt(message.text, IAiModelHandler.AiModelHandler.handler))
+
+    elif IVarHandler.VarHandler.handler == False and IVarHandler.VarHandler.promptHandler != True:
+        bot.send_message(message.chat.id, AiRequests.AskGpt(message.text, IAiModelHandler.AiModelHandler.handler))
+
+    elif IVarHandler.VarHandler.handler == False and IVarHandler.VarHandler.promptHandler == True:                      #Generating custom prompts
+        bot.send_message(message.chat.id, GeneratePrompts.GeneratePrompts(message.text, IAiModelHandler.AiModelHandler.handler))
 
 
 
