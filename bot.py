@@ -4,6 +4,7 @@ from telebot import types
 import messages
 import AiRequests
 from Interfaces import IVarHandler, IAiModelHandler
+from DTOs import UserPrompts
 from Requests import GeneratePrompts
 from dotenv import load_dotenv
 load_dotenv()
@@ -33,39 +34,45 @@ def start_command(message):
 
 @bot.message_handler(commands=['stop'])
 def start_command(message):
-    IVarHandler.VarHandler.handler = True 
+    IVarHandler.VarHandler.handler = "AiChoice"
 
 
 @bot.message_handler(func=lambda message: True)
 def handle_message(message):
-    if IVarHandler.VarHandler.handler == True and IVarHandler.VarHandler.promptHandler != True:
+    if IVarHandler.VarHandler.handler == "AiChoice":
         if message.text == "ChatGPT":
             bot.send_message(message.chat.id, "You selected Option 1!")
-            IVarHandler.VarHandler.handler = False
+            IVarHandler.VarHandler.handler = "AiChat"
         elif message.text == "Copilot":
             bot.send_message(message.chat.id, "You selected Option 2!")
-            IVarHandler.VarHandler.handler = False
+            IVarHandler.VarHandler.handler = "AiChat"
         elif message.text == "Gemma AI":
             bot.send_message(message.chat.id, "You selected Gemma Ai")
             IAiModelHandler.AiModelHandler.handler = "gemma2-9b-it"
-            IVarHandler.VarHandler.handler = False
+            IVarHandler.VarHandler.handler = "AiChat"
         elif message.text == "Meta AI":
             bot.send_message(message.chat.id, "You selected Meta AI")
             IAiModelHandler.AiModelHandler.handler = "llama3-8b-8192"
-            IVarHandler.VarHandler.handler = False
+            IVarHandler.VarHandler.handler = "AiChat"
         elif message.text == "Personalized AI":
-            bot.send_message(message.chat.id, "You selected custom AI\nDescribe how you want your chatbot to behave.")
-            IVarHandler.VarHandler.promptHandler = True
-            IVarHandler.VarHandler.handler = False
+            bot.send_message(message.chat.id, "You selected custom AI!\n\nTry describe how you want your chatbot to behave as accurately, as possible for better expirience.")
+            IVarHandler.VarHandler.handler = "GeneratePrompts"
             IAiModelHandler.AiModelHandler.handler = "llama3-8b-8192"
+        
         else:
             bot.send_message(message.chat.id, "Choose a option!")      
 
-    elif IVarHandler.VarHandler.handler == False and IVarHandler.VarHandler.promptHandler != True:
+    elif IVarHandler.VarHandler.handler == "AiChat":
         bot.send_message(message.chat.id, AiRequests.AskGpt(message.text, IAiModelHandler.AiModelHandler.handler))
 
-    elif IVarHandler.VarHandler.handler == False and IVarHandler.VarHandler.promptHandler == True:                      #Generating custom prompts
-        bot.send_message(message.chat.id, GeneratePrompts.GeneratePrompts(message.text, IAiModelHandler.AiModelHandler.handler))
+    elif IVarHandler.VarHandler.handler == "GeneratePrompts":                      #Generating custom prompts
+        UserPrompts.CustomPrompts = GeneratePrompts.GeneratePrompts(message.text, IAiModelHandler.AiModelHandler.handler)
+        bot.send_message(message.chat.id, UserPrompts.CustomPrompts)
+        IVarHandler.VarHandler.handler = "CustomAiChat"
+    
+    elif IVarHandler.VarHandler.handler == "CustomAiChat":
+        bot.send_message(message.chat.id, AiRequests.AskGpt(UserPrompts.CustomPrompts + message.text, IAiModelHandler.AiModelHandler.handler))
+
 
 
 

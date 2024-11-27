@@ -3,7 +3,8 @@ from Interfaces.IApiKey import client
 
 
 def GeneratePrompts(userMessage, aiModel):                               #method to use in bot to pass the message from the user and return the answer from an AI model
-    generatePrompts = "Generate accurate prompts (only prompts, no other text) for AI model to behave accordingly to the following text: "
+    generatePrompts = "Generate 15 accurate prompts (ONLY PROMPTS, DONT TYPE ANYTHING ELSE!!!) for AI model to behave accordingly to the following text: "
+    prefix = "Write all your messages according to the following prompts:\n"
     chat_completion = client.chat.completions.create(
         messages=[
                 {
@@ -13,5 +14,5 @@ def GeneratePrompts(userMessage, aiModel):                               #method
             ],
         model=aiModel,
         )
-    generatedPrompts = chat_completion.choices[0].message.content
+    generatedPrompts = prefix + chat_completion.choices[0].message.content + '\n'
     return generatedPrompts

@@ -1,3 +1,3 @@
 class VarHandler():
-    handler = True      #dont set to none (the prod will suffer ) signed-off-by Dominik Bobrushka
+    handler = "AiChoice"      #dont set to none (the prod will suffer ) signed-off-by Dominik Bobrushka
     promptHandler = None

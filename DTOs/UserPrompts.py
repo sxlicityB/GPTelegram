@@ -1,2 +1,2 @@
 class CustomPrompts():
-    prompts = [] 
+    prompts = None 
